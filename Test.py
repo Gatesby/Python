@@ -1,195 +1,40 @@
-'''class HotelRoomCalc(object):
-    'Hotel room rate calculator'
-    def __init__(self, rt, sales = 0.085, rm = 0.1):
-        HotelRoomCalc default arguments:
-           sales tax == 8.5% and room tax == 10%
-        self.salesTax = sales
-        self.roomTax = rm
-        self.roomRate = rt
+from PIL import Image
+import argparse
 
-    def calcTotal(self, days = 1):
-        'Calculate totlal; default to daily rate'
-        daily = round((self.roomRate * (1 + self.roomTax + self.salesTax)), 2)
-        return float(days) * daily
+IMG = 'C:/Users/Gatesby23/Desktop/20160315213308689.png'
+WIDTH =120
+HEIGHT = 60
+OUTPUT = 'C:/Users/Gatesby23/Desktop/test.txt'
 
-sfo = HotelRoomCalc(299)
-print sfo.calcTotal()
-print sfo.calcTotal(2)
+ascii_char = list("$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`'. ")
 
-sea = HotelRoomCalc(189, 0.086, 0.058)
-print sea.calcTotal()
-print sea.calcTotal(4)
 
-wasWkDay = HotelRoomCalc(169, 0.045, 0.02)
-wasWkEnd = HotelRoomCalc(119, 0.045, 0.02)
+def get_char(r,b,g,alpha = 256):
+    if alpha == 0:
+        return ' '
+    length = len(ascii_char)
+    gray = int(0.2126 * r + 0.7152 * g + 0.0722 * b)
 
-print wasWkDay.calcTotal(5) + wasWkEnd.calcTotal(2)'''
+    unit = (255.0 + 1)/length
+    return ascii_char[int(gray/unit)]
 
-'''class P1(object):
-        def foo(self):
-            print 'called P1-foo()'
+if __name__ == '__main__':
 
-class P2(object):
-        def foo(self):
-            print 'called P2-foo()'
-        def bar(self):
-            print 'called P2-bar()'
+    im = Image.open(IMG)
+    im = im.resize((WIDTH,HEIGHT), Image.NEAREST)
 
-class C1(P1, P2):
-    pass
+    txt = ""
 
-class C2(P1, P2):
-    def bar(self):
-        print 'called C2-bar()'
+    for i in range(HEIGHT):
+        for j in range(WIDTH):
+            txt += get_char(*im.getpixel((j,i)))
+        txt += '\n'
 
-class GC(C1, C2):
-    pass
+    print txt
 
-gc = GC()
-gc.foo()
-gc.bar()'''
-
-'''class RoundFloatManual(object):
-    def __init__(self, val):
-        assert isinstance(val, float), \
-        "Value must be a float!"
-        self.value = round(val, 2)
-
-    def __str__(self):
-        return '.2%f' %self.value
-
-    __repr__ = __str__
-
-rfm = RoundFloatManual(3.2323)
-print rfm'''
-
-'''class Time60(object):
-	'Time60 - track hours and minutes'
-	def __init__(self, hr, min):
-		'Time60 constructor - takes hours and minutes'
-		self.hr = hr
-		self.min = min
-	def __str__(self):
-		'Time60 - string representation'
-		return '%d:%d' %(self.hr, self.min)
-	__repr__ = __str__
-	def __add__(self, other):
-		'Time60 - overloading the addition operator'
-		return self.__class__(self.hr + other.hr, self.min + other.min)
-	def __iadd__(self, other):
-		'Time60 - overloading in-placing addition'
-		self.hr += other.hr
-		self.min += other.min
-		return self'''
-
-from random import choice
-
-class Randseq(object):
-    def __init__(self, seq):
-        self.data = seq
-    def __iter__(self):
-        return self
-    def __next__(self):
-        return choice(self.data)
-
-#This is only test for GitHub, I want to know, if I add this line, what will happen?
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    if OUTPUT:
+        with open(OUTPUT,'w') as f:
+            f.write(txt)
+    else:
+       with open("output.txt",'w') as f:
+            f.write(txt)
